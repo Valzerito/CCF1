@@ -1,20 +1,17 @@
-const items=[ // Créer une variable item ou tous les menus sont compris dedans
+const items=[ 
     {
-        id:1, // Attribue l'ID 1 pour ce menu
-        nom:"Menu Classic", // donne le nom "Menu classic"
-        img:"img/m1.png", // Attribue une image au menu 
-        prix: 5, // Fixe un prix pour ce menu
-        description:"Burger, Salade, Tomate, Cornichon" // Décris les détails du menu
-    
+        id:1,
+        nom:"Menu Classic",
+        img:"img/m1.png",
+        prix: 5,
+        description:"Burger, Salade, Tomate, Cornichon"
     },
-    
     {
         id:2,
         nom:"Menu Bacon",
         img:"img/m2.png",
         prix: 6,
         description:"Burger, Fromage, Bacon, Salade, Tomate"
-    
     },
     {
         id:3,
@@ -22,7 +19,6 @@ const items=[ // Créer une variable item ou tous les menus sont compris dedans
         img:"img/m3.png",
         prix: 8,
         description:"Double Burger, Fromage, Cornichon, Salade"
-    
     },
     {
         id:4,
@@ -30,24 +26,64 @@ const items=[ // Créer une variable item ou tous les menus sont compris dedans
         img:"img/m4.png",
         prix: 7,
         description:"Poulet Frit, Tomate, Salade, Mayonnaise"
-    
     },
-]
+];
 
+const list = document.querySelector('.cards-list');
 
-const list = document.querySelector('.cards-list'); // cette ligne sélectionne le premier élément HTML qui a une classe CSS 
-
-
-function afficheitem(doc){ // cette fonction prend un objet "doc" et creer une carte HTML 
-    let carte = document.createElement('div'); // Creer l'élément "div" pour la carte
-    carte.setAttribute('id', doc.id); // ajoute l'identifiant "ID" en utilisant l'identifiant de l'objet doc
-    carte.classList.add('card'); // Ajoute la classe CSS "card" à la carte
-    carte.innerHTML='<div class="card_image"><img src="'+ doc.img + '"/></div><div class="card_title title-white"><div><p>'+ doc.nom+'</p><p>'+doc.prix +' E</p></div> </div> </div>'; // Cela ajoute du contenu HTML à la carte en utilisant les propriétés de l'objet "doc" 
-list.appendChild(carte); // Ajoute la carte a la liste en utilisant "appendchild" 
+function afficheitem(doc){
+    let carte = document.createElement('div');
+    carte.setAttribute('id', doc.id);
+    carte.classList.add('card');
+    carte.innerHTML='<div class="card_image"><img src="'+ doc.img + '"/></div><div class="card_title title-white"><div><p>'+ doc.nom+'</p><p>'+doc.prix +' E</p></div> </div> </div>';
+    list.appendChild(carte);
+    carte.addEventListener('click', () => {
+        alert(doc.description);
+    })
 }
 
+items.map(item=>afficheitem(item));
+
+const btnMax = document.createElement('button');
+btnMax.setAttribute('id', 'btnMax');
+btnMax.innerText = '+ CHERS';
+document.body.appendChild(btnMax);
+btnMax.addEventListener('click', () => {
+  const maxItem = items.sort((a, b) => b.prix - a.prix)[0];
+  list.innerHTML = '';
+  afficheitem(maxItem);
+});
+
+const btnMin = document.createElement('button');
+btnMin.setAttribute('id', 'btnMin');
+btnMin.innerText = '- CHERS';
+document.body.appendChild(btnMin);
+btnMin.addEventListener('click', () => {
+  const minItem = items.sort((a, b) => a.prix - b.prix)[0];
+  list.innerHTML = '';
+  afficheitem(minItem);
+});
 
 
-items.map(item=>afficheitem(item)); // appelle la fonctio "afficheitem" pour les éléments de la liste "items"
+const btnAll = document.createElement('button');
+btnAll.setAttribute('id', 'btnAll');
+btnAll.innerText = 'Tous les menus';
+document.body.appendChild(btnAll);
+btnAll.addEventListener('click', () => {
+  list.innerHTML = '';
+  items.map(item => afficheitem(item));
+});
+
+const btnAvg = document.createElement('button');
+btnAvg.setAttribute('id', 'btnAvg');
+btnAvg.innerText = 'Moyenne des prix';
+document.body.appendChild(btnAvg);
+btnAvg.addEventListener('click', () => {
+  const avg = items.reduce((total, item) => total + item.prix, 0) / items.length;
+  alert(`La moyenne des prix est de ${avg.toFixed(2)} E`);
+});
+
+
+
 
 
